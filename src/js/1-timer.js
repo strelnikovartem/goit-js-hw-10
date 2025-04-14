@@ -29,7 +29,7 @@ const options = {
         title: 'Error',
         message: 'Please choose a date in the future',
         backgroundColor: '#ef4040',
-        iconUrl: '../img/bi_x-octagon.png',
+        iconUrl: '../img/Group.svg',
       });
 
       startBtn.disabled = true;

@@ -37,7 +37,7 @@ function handleSubmit(event) {
     messageColor: '#ffffff',
     backgroundColor: '#59a10d',
     position: 'bottomCenter',
-    iconUrl: '../img/bi_check2-circle.png',
+    iconUrl: '../img/bi_check2-circle.svg',
   };
   const error = {
     title: 'Error',
@@ -45,7 +45,7 @@ function handleSubmit(event) {
     messageColor: '#ffffff',
     backgroundColor: '#ef4040',
     position: 'bottomCenter',
-    iconUrl: '../img/bi_x-octagon.png',
+    iconUrl: '../img/Group.svg',
     // iconError
   };
 
