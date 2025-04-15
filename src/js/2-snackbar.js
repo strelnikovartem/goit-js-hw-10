@@ -3,59 +3,55 @@ import iziToast from 'izitoast';
 // Додатковий імпорт стилів
 import 'izitoast/dist/css/iziToast.min.css';
 
-// import iconError from './img/error.svg';
-// import iconOk from './img/ok.svg';
-
+// Отримуємо елементи форми
 const form = document.querySelector('.form');
-const radioFulfilled = document.querySelector('.input-fulfilled');
-const radioRejected = document.querySelector('.input-rejected');
+const delayInput = form.querySelector('input[name="delay"]');
+const stateRadios = form.querySelectorAll('input[name="state"]');
 
-form.addEventListener('submit', handleSubmit);
-
-let delay;
-
-function handleSubmit(event) {
-  event.preventDefault();
-  delay = Number(event.target.elements.delay.value);
-
-  const promise = new Promise((resolve, reject) => {
-    if (radioFulfilled.checked) {
-      setTimeout(() => {
+// Функція для створення промісу
+function createPromise(delay, state) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (state === 'fulfilled') {
         resolve();
-      }, delay);
-    }
-    if (radioRejected.checked) {
-      setTimeout(() => {
+      } else {
         reject();
-      }, delay);
-    }
+      }
+    }, delay);
   });
+}
 
-  const success = {
-    title: 'OK',
-    message: `Fulfilled promise in ${delay}ms`,
-    messageColor: '#ffffff',
-    backgroundColor: '#59a10d',
-    position: 'bottomCenter',
-    iconUrl: '../img/bi_check2-circle.svg',
-  };
-  const error = {
-    title: 'Error',
-    message: `Rejected promise in ${delay}ms`,
-    messageColor: '#ffffff',
-    backgroundColor: '#ef4040',
-    position: 'bottomCenter',
-    iconUrl: '../img/Group.svg',
-    // iconError
-  };
+// Обробник сабміту форми
+
+form.addEventListener('submit', function (event) {
+  event.preventDefault(); // Запобігаємо перезавантаженню сторінки
+
+  const delay = parseInt(delayInput.value);
+
+  const state = [...stateRadios].find(radio => radio.checked)?.value;
+
+  if (isNaN(delay) || !state) {
+    return; // Якщо немає значення delay або вибраного стану, нічого не робимо
+  }
+
+  const promise = createPromise(delay, state);
 
   promise
-    .then(() => {
-      iziToast.show(success);
+    .then(resolvedDelay => {
+      // Якщо проміс виконано успішно
+      iziToast.success({
+        title: 'Success',
+        message: `✅ Fulfilled promise in ${resolvedDelay}ms`,
+        position: 'topRight',
+      });
     })
-    .catch(() => {
-      iziToast.show(error);
+    .catch(rejectedDelay => {
+      // Якщо проміс відхилено
+      iziToast.error({
+        title: 'Error',
+        message: `❌ Rejected promise in ${rejectedDelay}ms`,
+        position: 'topRight',
+      });
     });
-
   form.reset();
-}
+});
