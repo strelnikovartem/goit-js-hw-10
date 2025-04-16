@@ -13,9 +13,9 @@ function createPromise(delay, state) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (state === 'fulfilled') {
-        resolve();
+        resolve(delay);
       } else {
-        reject();
+        reject(delay);
       }
     }, delay);
   });
